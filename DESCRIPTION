@@ -1,0 +1,13 @@
+Package: mwa
+Type: Package
+Title: Causal Inference in Spatiotemporal Event Data
+Version: 0.4.2
+Date: 2017-11-10
+Author: Sebastian Schutte and Karsten Donnay
+Maintainer: Sebastian Schutte <schuttesebastian@gmail.com>
+Description: Matched Wake Analysis (mwa) grants insights into causal relationships in spatiotemporal event data.    
+License: LGPL-3
+Depends: R (>= 2.6), cem (>= 0.3), rJava (>= 0.9), MASS (>= 7.0)
+SystemRequirements: Java (>= 6.0)
+NeedsCompilation: no
+
