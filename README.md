@@ -3,7 +3,7 @@
 `mwa` is a flexible methodological framework designed to analyze causal relationships in spatially and temporally referenced data. Specific types of events might affect subsequent levels of other events. To estimate the corresponding effect, treatment, control, and dependent events are selected from the empirical sample. Treatment effects are established through automated matching and a diff-in-diffs regression design. The analysis is repeated for various spatial and temporal offsets from the treatment events. 
 
 # Installation
-[![CRAN](https://www.r-pkg.org/badges/version/geomerge)](https://cran.r-project.org/package=mwa)
+[![CRAN](https://www.r-pkg.org/badges/version/mwa)](https://cran.r-project.org/package=mwa)
 ![Downloads](https://cranlogs.r-pkg.org/badges/mwa)
 
 The package can be installed through the CRAN repository.
