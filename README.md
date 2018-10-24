@@ -143,7 +143,7 @@ alpha2 <- 0.01
 The package supports full inheritance for optional arguments of the following methods: cem and att (cem), lm (stats), glm.nb (MASS). The method name needs the prefix "packagename.method". For example, in order for cem to return an exactly balanced dataset simply add `cem.k2k = TRUE`.
 
 
-##Output
+## Output
 The `matchedwake` function returns an objects of class "matchedwake", which is a list of several objects. The standard `print`, `summary` and `plot` functions are overloaded to provide specific outputs for this class. We explain the output format in detail below illustrating how the results can be interpreted.
 
 
@@ -386,7 +386,7 @@ summary(results, detailed = TRUE)
 ## 4  42.9 18.7 9.3
 ```
 
-##Visualization
+## Visualization
 `plot()` returns a contour plot: The lighter the color the larger the estimated treatment effect. The corresponding standard errors are indicated by shading out some of the estimates: No shading corresponds to p < alpha1 for the treatment effect in the diff-in-diffs analysis. Dotted lines indicate p-values between alpha1 and alpha2 and full lines indicate p > alpha2. The cells indicating effect size and significance level are arranged in a table where each field corresponds to one specific combination of spatial and temporal sizes.
 
 ```r
