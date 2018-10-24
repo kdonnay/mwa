@@ -4,7 +4,9 @@
 
 Specific types of events might affect subsequent levels of other events. To estimate the corresponding effect, treatment, control, and dependent events are selected from the empirical sample. Treatment effects are established through automated matching and a diff-in-diffs regression design. The analysis is repeated for various spatial and temporal offsets from the treatment events to address concerns related to the "modifiable areal unit problem" (MAUP). Instead of arriving at a single estimate for an arbitrary choice of spatiotemporal unit, results for many different such specifications are reported making the dependency on these choices explicit.
 
-We here illustrate the methodology using an example from quantitative research on conflict but it could be equally applied in other quantitative fields of research that rely on geo-referenced event data: Criminologists might investigate the effects of law enforcement activities on subsequent levels of crime. Epidemiologists could analyze the spread of infectious disease as a function of specific types of interactions between individuals.  
+We here illustrate the methodology using an example from quantitative research on conflict but it could be equally applied in other quantitative fields of research that rely on geo-referenced event data: Criminologists might investigate the effects of law enforcement activities on subsequent levels of crime. Epidemiologists could analyze the spread of infectious disease as a function of specific types of interactions between individuals.
+
+> For further details on the methodological framework, please refer to the article of Schutte & Donnay that has appeared in [Political Geography](http://dx.doi.org/10.1016/j.polgeo.2014.03.001) in 2014.
 
 # Installation
 [![CRAN](https://www.r-pkg.org/badges/version/mwa)](https://cran.r-project.org/package=mwa)
@@ -27,8 +29,7 @@ devtools::install_github("css-konstanz/mwa")
 
 
 # Usage
-The following simple illustrations use simulated event data that are included with the package. Spatiotemporal patterns of "dependentÄ"ù, "útreatment"ù and "úcontrol" type events are constructed to represent a specific causal effect of treatment versus control on the level of dependent events. All of our simulation tests use the smallest possible increment of 1 additional dependent event per treatment episode and no increase for control episodes. We specifically chose effect size 1 for two reasons. First, to pose a difficult simulation
-test for the method to pass. The larger the effect size, the easier it would be to recover the pattern. Second, to emulate the kind of effect sizes we see in empirical data. In fact, empirical effect sizes are often smaller than 1, i.e. on average we see a significant increase or decrease of effect size 1 in the dependent variable only after multiple "trigger" events.
+The following simple illustrations use simulated event data that are included with the package. Spatiotemporal patterns of "dependent", "treatment" and "control" type events are constructed to represent a specific causal effect of treatment versus control on the level of dependent events. All of our simulation tests use the smallest possible increment of 1 additional dependent event per treatment episode and no increase for control episodes. We specifically chose effect size 1 for two reasons. First, to pose a difficult simulation test for the method to pass. The larger the effect size, the easier it would be to recover the pattern. Second, to emulate the kind of effect sizes we see in empirical data. In fact, empirical effect sizes are often smaller than 1, i.e. on average we see a significant increase or decrease of effect size 1 in the dependent variable only after multiple "trigger" events.
 
 
 ```R
@@ -49,29 +50,15 @@ In CEM, substantially identical but numerically slightly different values are co
 
 
 ## Difference-in-differences regression
-The treatment effect is estimated in a difference-in-differences regression design. To assess the within-subject before and after change, difference-in-differences performs an OLS regression on the matched data set to estimate changes in the number of dependent events brought about
-by the treatment. 
-$$n_{post} = \beta_{0} + \beta_{1}n_{pre} + \beta_{2}treatment + u$$
+The treatment effect is estimated in a difference-in-differences regression design. To assess the within-subject before and after change, difference-in-differences performs an OLS regression on the matched data set to estimate changes in the number of dependent events brought about by the treatment. $n_{post} = \beta_{0} + \beta_{1}n_{pre} + \beta_{2}treatment + u$
 The dependent variable in this model is the number of dependent events after interventions. $\beta_{1}$ estimates the impact of the number of dependent events before the intervention. $\beta_{2}$ is the estimated average treatment effect of the treated, i.e. the quantity of our interest.
 
 ##Potential pitfalls
-spatiotem poral cylinders around interventions can overlap partially. If they
-do, the ‚ÄúStable Unit Treatment Value Assumption‚Äù (SUTVA) inherent to matching is violated. 
-It states that the treatment effect of any observation should be independent of the assignment of treatment
-to other units. Violating this assumption can lead to biased estimates. Two MWA scenarios are imaginable in which the SUTVA assumption would be clearly violated. First, multiple treatment events could overlap in space and time. Assuming a positive treatment effect, the corresponding estimates are likely to be biased upward in this scenario. Second, treatment and control events could overlap and thereby ‚Äúwater down‚Äù the treatment effect. In this case,
-the estimate for the treatment effect would be biased downward. 
-Remember that the effect size in our simulated data is only 1. Thus for overlapping spatiotemporal episodes, where counts in the dependent category additionally vary due to the overlap, significant differences of 1 in the level of
-dependent events are increasingly difficult to detect.
+spatiotem poral cylinders around interventions can overlap partially. If they do, the _Stable Unit Treatment Value Assumption_ (SUTVA) inherent to matching is violated. It states that the treatment effect of any observation should be independent of the assignment of treatment to other units. Violating this assumption can lead to biased estimates. Two MWA scenarios are imaginable in which the SUTVA assumption would be clearly violated. First, multiple treatment events could overlap in space and time. Assuming a positive treatment effect, the corresponding estimates are likely to be biased upward in this scenario. Second, treatment and control events could overlap and thereby _water down_ the treatment effect. In this case, the estimate for the treatment effect would be biased downward. Remember that the effect size in our simulated data is only 1. Thus for overlapping spatiotemporal episodes, where counts in the dependent category additionally vary due to the overlap, significant differences of 1 in the level of dependent events are increasingly difficult to detect.
 
-The simplest way to avoid drawing false inference is therefore to check the data for overlaps of 
-treatment and control events and select subsets that are not affected by this problem. For
-example, a civil war might go through phases of intense violence (e.g. summer offensives) and calmer periods, 
-and researchers could test the causal effects of different types of events in the calmer periods to avoid 
-false inference from overlapping events. However, empirical insights into the conflict dynamics would then, 
-of course, be exclusively limited to such calmer periods instead of the entire conflict.
+The simplest way to avoid drawing false inference is therefore to check the data for overlaps of treatment and control events and select subsets that are not affected by this problem. For example, a civil war might go through phases of intense violence (e.g. summer offensives) and calmer periods, and researchers could test the causal effects of different types of events in the calmer periods to avoid false inference from overlapping events. However, empirical insights into the conflict dynamics would then, of course, be exclusively limited to such calmer periods instead of the entire conflict.
 
-If substantial numbers of overlapping cylinders cannot be avoided, data can still be analyzed using MWA. In this situation, the following problem has to be accounted for: Interventions of different types prior to the intervention under investigation can affect subsequent levels of dependent events. As a result, the causal
-effect attributed to the intervention would be in fact the product of a specific mix of different interventions (a double treatment, for example). A simple remedy in this situation is to match on the numbers of previous treatment and control events. This ensures that the interventions retained in the post-matching sample have similar histories of treatment and control events. A third strategy is to simply remove overlapping observations from the sample. The obvious problem with this approach is the potential bias arising from non-random deletion itself.
+If substantial numbers of overlapping cylinders cannot be avoided, data can still be analyzed using MWA. In this situation, the following problem has to be accounted for: Interventions of different types prior to the intervention under investigation can affect subsequent levels of dependent events. As a result, the causal effect attributed to the intervention would be in fact the product of a specific mix of different interventions (a double treatment, for example). A simple remedy in this situation is to match on the numbers of previous treatment and control events. This ensures that the interventions retained in the post-matching sample have similar histories of treatment and control events. A third strategy is to simply remove overlapping observations from the sample. The obvious problem with this approach is the potential bias arising from non-random deletion itself.
 
 Detailed statistics on the degree of overlaps are shown below with simulated data.
 
@@ -120,10 +107,7 @@ matchColumns <- c("match1","match2")
 Here we specify some optional parameters:
 
 - **regression type:**
-with the parameter `estimation` you can choose an estimation method: "lm"(linear model), "att"(estimation procedure from the `cem` package) or "nb"(count dependent model).
-For regressions using "lm" or "att" we can weight the regression by the number of treatment vs. control cases.
-Additional control variables can be specified via estimationControls.
-For example, if estimationControls = c("covariate1"), the package automatically modifies the estimation formula. In the output it returns the coefficients and p values for the treatment and all additional control variables.
+with the parameter `estimation` you can choose an estimation method: "lm" (linear model), "att" (estimation procedure from the `cem` package) or "nb" (count dependent model). For regressions using "lm" or "att" we can weight the regression by the number of treatment vs. control cases. Additional control variables can be specified via estimationControls. For example, if `estimationControls = c("covariate1")`, the package automatically modifies the estimation formula. In the output it returns the coefficients and p values for the treatment and all additional control variables.
 
 ```r
 estimation = "lm"
@@ -150,23 +134,18 @@ TCM <- TRUE
 ```
 
 - **alpha:**
-Significance levels can be specified to decide when a treatment effect is statistically significant
-alpha1 is the first significance level used for the analysis and plots (Default = 0.05).
-alpha2 is the second significance level used for the analysis and plots (Default = 0.01).
+Significance levels can be specified to decide when a treatment effect is statistically significant where alpha1 is the first significance level used for the analysis and plots (Default = 0.05) and alpha2 is the second significance level used for the analysis and plots (Default = 0.01).
 
 ```r
 alpha1 <- 0.05
 alpha2 <- 0.01 
 ```
 
-The package supports full inheritance for optional arguments of the following methods: cem and att (cem), lm (stats), glm.nb (MASS). The method name needs the prefix "packagename.method".
-For example, in order for cem to return an exactly balanced dataset simply add cem.k2k = TRUE.
+The package supports full inheritance for optional arguments of the following methods: cem and att (cem), lm (stats), glm.nb (MASS). The method name needs the prefix "packagename.method". For example, in order for cem to return an exactly balanced dataset simply add `cem.k2k = TRUE`.
 
 
 ##Output
-The `matchedwake()` function returns an objects of class `matchedwake`, which is a list of several objects. Also it overwrites the plot and summary function.
-We explain here in detail the objects in this list and how the results can be interpreted.
-
+The `matchedwake` function returns an objects of class "matchedwake", which is a list of several objects. The standard `print`, `summary` and `plot` functions are overloaded to provide specific outputs for this class. We explain the output format in detail below illustrating how the results can be interpreted.
 
 
 ```r
@@ -229,9 +208,7 @@ results$estimates
 ## 25       10          10 1.00000000 2.913782e-04    0.74297308
 ```
 
-`matching` gives a data.frame with detailed matching statistics for all spatial and temporal windows considered. Returns the number of control and treatment episodes, L1 metric, percent common support. All values are given both pre and post matching. L1 is a multivariate distance metric expressing the dissimilarity between the joint distributions of the covariates in treatment and control groups. To calculate this statistic, the joint distributions are approximated in fine-grained histograms. Average normalized differences between these histograms are expressed in the L1 statistic ranging from complete dissimilarity  
-Common support expresses the overlap between the distributions of matching variables for treatment and  
-groups in percent. 100% common support refers to a situation where the exact same value ranges can be found for all matching variables in both groups.
+`matching` gives a data.frame with detailed matching statistics for all spatial and temporal windows considered. Returns the number of control and treatment episodes, L1 metric, percent common support. All values are given both pre and post matching. L1 is a multivariate distance metric expressing the dissimilarity between the joint distributions of the covariates in treatment and control groups. To calculate this statistic, the joint distributions are approximated in fine-grained histograms. Average normalized differences between these histograms are expressed in the L1 statistic ranging from complete dissimilarity  Common support expresses the overlap between the distributions of matching variables for treatment and groups in percent. 100% common support refers to a situation where the exact same value ranges can be found for all matching variables in both groups.
 
 ```r
 results$matching
@@ -292,8 +269,7 @@ results$matching
 ## 25            8              7   0.321               42.9
 ```
 
-`SUTVA` yields a data.frame with detailed statistics on the degree of overlaps of the spatiotemporal cylinders. Returns the fraction of cases in which two or more treatment (or control) episodes overlap (SO: same overlap) and the fraction of overlapping treatment and control episodes (MOÄù: mixed overlap). 
-All values are given pre and post matching and for the full time window.
+`SUTVA` yields a data.frame with detailed statistics on the degree of overlaps of the spatiotemporal cylinders. Returns the fraction of cases in which two or more treatment (or control) episodes overlap (SO: same overlap) and the fraction of overlapping treatment and control episodes (MO‚Ç¨¬ù: mixed overlap). All values are given pre and post matching and for the full time window.
 
 ```r
 results$SUTVA
@@ -328,11 +304,7 @@ results$SUTVA
 ## 25       10          10  0.107   0.093 0.187  0.040   0.053 0.093
 ```
 
-`wakes` provides a data.frame with the information for the spatiotemporal cylinders (or wakes)
-for all spatial and temporal windows considered. Returns the eventID (i.e.
-the index of the event in the time-ordered dataset), 
-treatment (1: treatment episode, 0: control episode), counts of dependent events, 
-overlaps (‚ÄúSO‚Äù and ‚ÄúMO‚Äù) pre and post intervention, and the matching variables.
+`wakes` provides a data.frame with the information for the spatiotemporal cylinders (or wakes) for all spatial and temporal windows considered. Returns the eventID (i.e., the index of the event in the time-ordered dataset), treatment (1: treatment episode, 0: control episode), counts of dependent events, overlaps (SO and MO) pre and post intervention, and the matching variables.
 
 ```r
 head(results$wakes,20)
@@ -423,7 +395,7 @@ summary(results, detailed = TRUE)
 plot(results)
 ```
 
-![mwa_plot](https://raw.githubusercontent.com/css-konstanz/meltt/master/README_files/plot.png)
+![mwa_plot](https://raw.githubusercontent.com/css-konstanz/mwa/master/README_files/plot.png)
 
 
 ## Meta
