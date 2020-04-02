@@ -22,7 +22,7 @@ Or the development version from Github
 
 ```R
 # install.packages("devtools")
-devtools::install_github("css-konstanz/mwa")
+devtools::install_github("kdonnay/mwa")
 ```
 
 <font color="darkgrey">**<u>Important</u>: _The size of the Java heap space has to be set before first calling the package via library(mwa) since JVM size cannot change once it has been initialized. This also implies that R has to be restarted if another library was already using a JVM in order for the heap space option to have any effect. To set the heap space to 1 GB, for example, use options(java.parameters = "-Xmx1g") (512 MB is the default size)._**</font>
@@ -394,11 +394,11 @@ summary(results, detailed = TRUE)
 plot(results)
 ```
 
-![mwa_plot](https://raw.githubusercontent.com/css-konstanz/mwa/master/README_files/plot.png)
+![mwa_plot](https://raw.githubusercontent.com/kdonnay/mwa/master/README_files/plot.png)
 
 
 ## Meta
-- Please [report any issues or bugs](https://github.com/css-konstanz/mwa/issues).
+- Please [report any issues or bugs](https://github.com/kdonnay/mwa/issues).
 - License:  LGPL-3
 - Get citation information for `mwa` in R using `citation(package = 'mwa')`
 - CRAN: https://cran.r-project.org/package=mwa
