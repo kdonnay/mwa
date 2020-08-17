@@ -133,11 +133,11 @@ TCM <- TRUE
 ```
 
 - **alpha:**
-Significance levels can be specified to decide when a treatment effect is statistically significant where alpha1 is the first significance level used for the analysis and plots (Default = 0.05) and alpha2 is the second significance level used for the analysis and plots (Default = 0.01).
+Significance levels can be specified to decide when a treatment effect is statistically significant where alpha1 is the first significance level used for the analysis and plots (Default = 0.05) and alpha2 is the second significance level used for the analysis and plots (Default = 0.1).
 
 ```r
 alpha1 <- 0.05
-alpha2 <- 0.01 
+alpha2 <- 0.1 
 ```
 
 The package supports full inheritance for optional arguments of the following methods: cem and att (cem), lm (stats), glm.nb (MASS). The method name needs the prefix "packagename.method". For example, in order for cem to return an exactly balanced dataset simply add `cem.k2k = TRUE`.
