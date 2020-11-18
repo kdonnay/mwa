@@ -4,6 +4,10 @@
 //
 //
 
+== 0.4.3 (17 Nov 2020) ==
+   * Minor bug fixes and general package maintenance
+   * Re-release after solving reverse dependency issue with package cem
+
 == 0.4.2 (02 Apr 2020) ==
    * Minor bug fixes and general package maintenance
    * Moved GitHub development version to www.github.com/kdonnay/mwa
