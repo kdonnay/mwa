@@ -5,9 +5,9 @@ Version: 0.4.3
 Date: 2020-11-17
 Author: Sebastian Schutte and Karsten Donnay
 Maintainer: Sebastian Schutte <schuttesebastian@gmail.com>
-Description: Matched Wake Analysis (mwa) grants insights into causal relationships in spatiotemporal event data.    
+Description: Implementation of Matched Wake Analysis (mwa) for studying causal relationships in spatiotemporal event data, introduced by Schutte and Donnay (2014) <doi:10.1016/j.polgeo.2014.03.001>. 
 License: LGPL-3
 Depends: R (>= 2.6), cem (>= 1.1), rJava (>= 0.9), MASS (>= 7.0)
 SystemRequirements: Java (>= 6.0)
 NeedsCompilation: no
-
+Packaged: 2020-11-17 08:48:56 UTC; donnay
