@@ -4,6 +4,10 @@
 //
 //
 
+== 0.4.4 (13 Apr 2022) ==
+   * Fixed minor bug in main mwa() method
+   * Re-release after CRAN archived the package because of minor additional issue in "donttest"
+
 == 0.4.3 (17 Nov 2020) ==
    * Minor bug fixes and general package maintenance
    * Re-release after solving reverse dependency issue with package cem

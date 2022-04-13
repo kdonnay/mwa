@@ -75,7 +75,7 @@ matchedwake <- function(data, t_window, spat_window, treatment, control, depende
     terminate <- TRUE
   }
   datecheck <- try(as.Date(data$timestamp, format= "%Y-%m-%d %H:%M:%S"))
-  if (any(class(datecheck) == "try-error" || is.na(datecheck))){
+  if (any(class(datecheck) == "try-error" || sum(is.na(datecheck))>0)){
     missing_arguments <- append(missing_arguments,'\n  timestamp (date format must be "YYYY-MM-DD hh:mm:ss)')
     terminate <- TRUE
   }
