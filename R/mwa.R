@@ -1,4 +1,4 @@
-matchedwake <- function(data, t_window, spat_window, treatment, control, dependent, matchColumns, t_unit = "days", estimation = "lm", formula = "dependent_post ~ dependent_pre + treatment", weighted = FALSE, estimationControls = c(), TCM = FALSE, deleteSUTVA = FALSE, alpha1 = 0.05, alpha2 = 0.1, match.default = TRUE, ...){
+matchedwake <- function(data, t_window, spat_window, treatment, control, dependent, matchColumns, t_unit = "days", estimation = "lm", formula = "dependent_post ~ dependent_pre + treatment", weighted = FALSE, estimationControls = c(), TCM = FALSE, deleteSUTVA = FALSE, alpha1 = 0.05, alpha2 = 0.1, match.default = TRUE, match.details = FALSE, ...){
   missing_arguments <- c()
   terminate <- FALSE
   if(missing(data)){   
@@ -144,11 +144,11 @@ matchedwake <- function(data, t_window, spat_window, treatment, control, depende
     if (deleteSUTVA){
       wakes <- subset(wakes,(wakes$SO_pre==0 & wakes$MO_pre==0))
     }
-    matchedwake <- slideWakeMatch(wakes, alpha1, matchColumns, estimation, formula, weighted, estimationControls, TCM, match.default, ...)
+    matchedwake <- slideWakeMatch(wakes, alpha1, matchColumns, estimation, formula, weighted, estimationControls, TCM, match.default, match.details, ...)
     if (!match.default){
       message("ATTENTION: match.default set to FALSE, data was not matched!")
     }
-    matchedwake$parameters <- list(t_window = t_window, spat_window = spat_window, treatment = treatment, control = control, dependent = dependent, matchColumns = matchColumns, t_unit = t_unit, estimation = estimation, estimationControls = estimationControls, TCM = TCM, deleteSUTVA = deleteSUTVA, alpha1 = alpha1, alpha2 = alpha2, match.default = match.default, ...)
+    matchedwake$parameters <- list(t_window = t_window, spat_window = spat_window, treatment = treatment, control = control, dependent = dependent, matchColumns = matchColumns, t_unit = t_unit, estimation = estimation, estimationControls = estimationControls, TCM = TCM, deleteSUTVA = deleteSUTVA, alpha1 = alpha1, alpha2 = alpha2, match.default = match.default, match.details = match.details, ...)
     matchedwake$call <- call    
     class(matchedwake) <- "matchedwake"
     cat('Analysis complete!\n\nUse summary() for an overview and plot() to illustrate the results graphically.\n')
@@ -404,7 +404,7 @@ slidingWake <- function(data, t_unit, t_window, spat_window, treatment, control,
   return(wakesoutput)
 }
 
-slideWakeMatch <- function(wakes, alpha1, matchColumns, estimation, formula, weighted, estimationControls, TCM, match.default, ...){
+slideWakeMatch <- function(wakes, alpha1, matchColumns, estimation, formula, weighted, estimationControls, TCM, match.default, match.details, ...){
   cat('Matching observations and estimating causal effect....')
   t_window <- spat_window <- NULL 
   ceminputs <- list(...)
@@ -485,6 +485,14 @@ slideWakeMatch <- function(wakes, alpha1, matchColumns, estimation, formula, wei
     matchColumns <- c(matchColumns,"dependent_trend")
   }
   cem_cols <- c(matchColumns, "treatment", "dependent_post", "dependent_pre", estimationControls)
+  if (match.details){
+    cem_bins <- as.data.frame(matrix(nrow = (length(t_windows) * length(spat_windows)),ncol = 2+length(matchColumns)))
+    names(cem_bins) <- c("t_window","spat_window",matchColumns)
+    cem_bins$spat_window <- spat_windows
+    cem_bins$t_window <- tmp
+    matched <- wakes[,c(1:4)]
+    matched$matched <- -NA
+  }
   progressvar <- length(spat_windows)*length(t_windows)
   varcounter <- 1
   progresscounter <- 1
@@ -532,6 +540,13 @@ slideWakeMatch <- function(wakes, alpha1, matchColumns, estimation, formula, wei
       X <- match_data[,is.element(names(match_data),cem_cols)]
       if (match.default){
         mat <- do.call(cem,c(list(treatment = "treatment", data = X, drop = c("dependent_post", "dependent_pre", estimationControls)), ceminputs))
+        md <- match_data[mat$matched,]
+        if (match.details){
+          for (col in 1:length(matchColumns)){
+            cem_bins[cem_bins$t_window == time & cem_bins$spat_window == space,matchColumns[col]==names(cem_bins)] <- paste(as.character(unlist(mat$breaks[matchColumns[col]==names(mat$breaks)])), collapse=", ")
+          }
+          matched$matched[matched$t_window == time & matched$spat_window == space] <- as.numeric(mat$matched)
+        }
       }else{
         call <- call("cem.match")
         strata <- as.numeric(rep(NA,nrow(X)))
@@ -564,8 +579,8 @@ slideWakeMatch <- function(wakes, alpha1, matchColumns, estimation, formula, wei
         w <- rep(1,nrow(X))
         mat <- list(call = call, strata = strata, n.strata = n.strata, vars = vars, drop = drop, treatment = treatment, n = n, groups = groups, g.names = g.names, n.groups = n.groups, group.idx = group.idx, group.len = group.len, mstrata = mstrata, mstrataID = mstrataID, matched = matched, baseline.group = baseline.group, tab = tab, k2k = k2k, w = w)
         class(mat) <- "cem.match"
+        md <- match_data[mat$matched,]
       }
-      md <- match_data[mat$matched,]
       if (estimation == "lm"){
         if (weighted){
           weights <- mat$w[mat$matched]
@@ -724,7 +739,11 @@ slideWakeMatch <- function(wakes, alpha1, matchColumns, estimation, formula, wei
   names(SUTVA) <- c("t_window","spat_window","SO_pre","SO_post","SO","MO_pre","MO_post","MO")
   SUTVA <- SUTVA[order(SUTVA$t_window),]
   row.names(SUTVA) <- NULL
-  matchedwake <- list (estimates = estimates, matching = matching, SUTVA = SUTVA, wakes = wakes)
+  if (match.details){
+    matchedwake <- list (estimates = estimates, matching = matching, SUTVA = SUTVA, wakes = wakes, matched = matched, bins = cem_bins)
+  }else{
+    matchedwake <- list (estimates = estimates, matching = matching, SUTVA = SUTVA, wakes = wakes)
+  }
   cat('[OK]\n')
   return(matchedwake)  
 }

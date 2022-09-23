@@ -8,7 +8,7 @@ Method takes the output of \code{\link{slidingWake}}, matches observations using
 }
 \usage{
 slideWakeMatch(wakes, alpha1, matchColumns, estimation, formula, weighted,
-               estimationControls, TCM, match.default, ...)
+               estimationControls, TCM, match.default, match.details, ...)
 }
 \arguments{
   \item{wakes}{
@@ -29,14 +29,17 @@ slideWakeMatch(wakes, alpha1, matchColumns, estimation, formula, weighted,
   \item{weighted}{
   Boolean specifying whether regression is weighted.
 }
- \item{estimationControls}{
+  \item{estimationControls}{
   vector of Strings indicating additional control dimensions to be included in the estimation.
 }
   \item{TCM}{
   Boolean to select whether the method should match on counts of previous treatment and control instances.
 }
-\item{match.default}{
+  \item{match.default}{
   Boolean to select whether observations are matched using \code{cem}.
+}
+  \item{match.details}{
+  Boolean to select whether detailed matching statistics are returned from \code{cem}. Default = \kbd{FALSE}.
 }
   \item{\dots}{
   optional parameters that can be passed to the methods used for matching and estimation.
@@ -57,7 +60,13 @@ slideWakeMatch(wakes, alpha1, matchColumns, estimation, formula, weighted,
    \code{data.frame} with detailed statistics on the degree of overlaps of the spatiotemporal cylinders.
 }
    \item{wakes}{
-   \code{data.frame}.
+   \code{data.frame} providing the information for the spatiotemporal cylinders (or \code{wakes}) for all spatial and temporal windows considered.
+}
+   \item{matched}{
+   \code{data.frame} with details on which observations were matched for all spatial and temporal windows considered.
+}
+   \item{bins}{
+   \code{data.frame} with details for the bins used in cem matching for all spatial and temporal windows considered.
 }
 See the description of \code{\link{matchedwake}} for details.
 }

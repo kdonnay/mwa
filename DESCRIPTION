@@ -1,8 +1,8 @@
 Package: mwa
 Type: Package
 Title: Causal Inference in Spatiotemporal Event Data
-Version: 0.4.4
-Date: 2022-04-26
+Version: 0.4.5
+Date: 2022-09-23
 Author: Sebastian Schutte and Karsten Donnay
 Maintainer: Sebastian Schutte <schuttesebastian@gmail.com>
 Description: Implementation of Matched Wake Analysis (mwa) for studying causal relationships in spatiotemporal event data, introduced by Schutte and Donnay (2014) <doi:10.1016/j.polgeo.2014.03.001>. 

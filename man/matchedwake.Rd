@@ -14,7 +14,7 @@ matchedwake(data, t_window, spat_window, treatment, control,
 	    formula = "dependent_post ~ dependent_pre + treatment",
             weighted = FALSE, estimationControls = c(), TCM = FALSE,
             deleteSUTVA = FALSE, alpha1 = 0.05, alpha2 = 0.1,
-            match.default = TRUE, ...)
+            match.default = TRUE, match.details = FALSE, ...)
 }
 \arguments{
   \item{data}{
@@ -68,6 +68,9 @@ matchedwake(data, t_window, spat_window, treatment, control,
   \item{match.default}{
   Boolean to select whether observations are matched using \code{cem}. Default = \kbd{TRUE}.
 }
+  \item{match.details}{
+  Boolean to select whether detailed matching statistics are returned from \code{cem}. Default = \kbd{FALSE}.
+}
   \item{\dots}{
   optional parameters that can be passed to the methods used for matching and estimation. See Details.
 }
@@ -102,6 +105,12 @@ matchedwake(data, t_window, spat_window, treatment, control,
 }
    \item{wakes}{
    \code{data.frame} providing the information for the spatiotemporal cylinders (or \code{wakes}) for all spatial and temporal windows considered. Returns the \code{eventID} (i.e. the index of the event in the time-ordered dataset), \code{treatment} (1: treatment episode, 0: control episode), counts of \code{dependent} events, overlaps (``SO'' and ``MO'') pre and post intervention, and the matching variables.
+}
+   \item{matched}{
+   \code{data.frame} with details on which observations were matched for all spatial and temporal windows considered. Returns the \code{eventID} (i.e. the index of the event in the time-ordered dataset), \code{treatment} (1: treatment episode, 0: control episode) and \code{matched} (1: matched, 0: not matched).
+}
+   \item{bins}{
+   \code{data.frame} with details for the bins used in cem matching for all spatial and temporal windows considered. Returns the bin information from cem (variable ``breaks'') for each \code{matchColumns}.
 }
    \item{parameters}{
    \code{list} of all arguments passed to the method.

@@ -4,6 +4,9 @@
 //
 //
 
+== 0.4.5 (23 Sep 2022) ==
+   * Parsing additional matching statistics from cem
+
 == 0.4.4 (13 Apr 2022) ==
    * Fixed minor bug in main mwa() method
    * Re-release after CRAN archived the package because of minor additional issue in "donttest"
