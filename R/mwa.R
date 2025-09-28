@@ -210,7 +210,8 @@ summary.matchedwake <- function(object, detailed = FALSE, ...){
   }
 }
 
-plot.matchedwake <- function(x, zlim = NA, plotNAs = TRUE, ...){
+plot.matchedwake <- function(x, zlim = NA, plotNAs = TRUE, adjust = "none", ...){
+  adj <- match.arg(adjust)
   density <- 3
   lty <- 2
   lwd <- 2
@@ -222,6 +223,7 @@ plot.matchedwake <- function(x, zlim = NA, plotNAs = TRUE, ...){
   xAxis <- sort(unique(pdata$spat_window))
   pswcplot <- matrix(nrow=length(xAxis)+2,ncol=length(yAxis)+2)
   eswcplot <- matrix(nrow=length(xAxis)+2,ncol=length(yAxis)+2)
+  pdata$pvalue <- p.adjust(pdata$pvalue, method=adj)
   for (y in 1:length(yAxis)){
     for (x in 1:length(xAxis)){
       eswcplot[x+1,y+1] <- as.numeric(pdata$estimate[pdata$t_window == yAxis[y] & pdata$spat_window == xAxis[x]])

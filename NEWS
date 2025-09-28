@@ -4,8 +4,10 @@
 //
 //
 
-== 0.4.5 (23 Sep 2022) ==
+== 0.5.0 (28 Sep 2025) ==
+   * Added multiplicity adjustment in plot method (Credit: David Armstrong, github.com/davidaarmstrong)
    * Parsing additional matching statistics from cem
+   * Updated package description and documentation
 
 == 0.4.4 (13 Apr 2022) ==
    * Fixed minor bug in main mwa() method
