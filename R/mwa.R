@@ -355,24 +355,7 @@ slidingWake <- function(data, t_unit, t_window, spat_window, treatment, control,
   matchCol <- as.character(lapply(matchColumns,function(x) which(x==names(data))))
   mem <- .jcall("WakeCounter","Ljava/lang/String;","heapspace",simplify = TRUE)
   memory <- round(as.numeric(mem)/1073741824,1)
-  cat(paste('Using JVM with ',memory,' GB heap space...\n',sep=""))
-  options <- options()
-  meminput <- unlist(strsplit(options$java.parameters,"-Xmx"))[2]
-  meminputMB <- unlist(strsplit(meminput,"m"))[1]
-  meminputGB <- unlist(strsplit(meminput,"g"))[1]
-  memcheck <- FALSE
-  if (nchar(meminputMB)==nchar(meminput)-1){
-    if (as.numeric(meminputMB)!=memory*1024){
-      memcheck <- TRUE
-    }
-  }else{
-    if (as.numeric(meminputGB)!=memory){
-      memcheck <- TRUE
-    }
-  }
-  if (memcheck){
-    message(paste('WARNING: Could not run JVM with heap space set in options(java.parameters = "',options$java.parameters,'").\n         Restarting the R session and setting java.parameters before loading the mwa package will solve this problem!',sep=""))
-  }
+  cat(paste('Using JVM with ',memory,' GB heap space...\n.         If you need to modify the heap space, restart the R session and set java.parameters before loading the mwa package, e.g. options(java.parameters = "-Xmx4g").',sep=""))
   directory <- getwd()
   javatimevarinput <- .jcast(.jarray(timevarinput,contents.class="[Ljava/lang/String;",dispatch=TRUE),"[Ljava/lang/String;")      
   javaspatvarinput <- .jcast(.jarray(spatvarinput,contents.class="[Ljava/lang/String;",dispatch=TRUE),"[Ljava/lang/String;")      
